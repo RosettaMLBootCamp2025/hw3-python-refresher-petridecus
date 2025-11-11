@@ -38,12 +38,19 @@ def analyze_sequences(sequences):
     #     'negative_charge': ...
     # }
 
+    results = {}
+
     for header, sequence in sequences.items():
-        # TODO: Implement analysis for each sequence
-        pass
+        pos_neg_counts = sequence_utils.count_charged_residues(sequence)
+        results[header] = {
+            'length': len(sequence),
+            'molecular_weight': sequence_utils.molecular_weight(sequence),
+            'hydrophobic_count': sequence_utils.count_hydrophobic(sequence),
+            'positive_charge': pos_neg_counts[0],
+            'negative_charge': pos_neg_counts[1]
+        }
 
     return results
-
 
 def write_results(results, output_file="analysis_results.txt"):
     """
@@ -62,6 +69,15 @@ def write_results(results, output_file="analysis_results.txt"):
             f.write("Protein Sequence Analysis Results\n")
             f.write("=" * 70 + "\n\n")
 
+            for header, data in results.items():
+                f.write("Sequence: " + header + "\n")
+                f.write("\tLength: " + str(data["length"]) + "aa\n")
+                f.write("\tMolecular Weight: " + str(data["molecular_weight"]) + " Da\n")
+                f.write("\tHydrophobic residues: " + str(data["hydrophobic_count"]) + "\n")
+                f.write("\tPositive charges: " + str(data["positive_charge"]) + "\n")
+                f.write("\tNegative charges: " + str(data["negative_charge"]) + "\n")
+                f.write("\tNet charge: " + str(data["positive_charge"] - data["negative_charge"]) + "\n\n")
+
             # TODO: Write each sequence's results
             # Example format:
             # Sequence: protein_name
@@ -72,8 +88,6 @@ def write_results(results, output_file="analysis_results.txt"):
             #   Negative charges: 15
             #   Net charge: -3
             #
-            pass
-
         print(f"\nResults written to {output_file}")
 
     except Exception as e:

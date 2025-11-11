@@ -31,10 +31,13 @@ def molecular_weight(protein_seq):
         'S': 105.09, 'T': 119.12, 'W': 204.23, 'Y': 181.19, 'V': 117.15
     }
 
-    # TODO: Implement this function
-    # Hint: Loop through the sequence and sum up the weights
-    # Hint: Subtract 18.01 for each peptide bond (number of residues - 1) to account for water loss
-    pass
+    # because bond weight will be subtracted N times instead of N-1 times (i am lazy)
+    weight = 18.01
+
+    for aa in protein_seq:
+        weight += aa_weights[aa] - 18.01
+
+    return weight
 
 
 # Exercise 2: Count Hydrophobic Residues
@@ -57,9 +60,12 @@ def count_hydrophobic(protein_seq):
     """
     hydrophobic = set('AVILMFWP')
 
-    # TODO: Implement this function
-    # Hint: Use a for loop or sum() with a generator expression
-    pass
+    num_hydrophobic = 0
+    for aa in protein_seq:
+        if aa in hydrophobic:
+            num_hydrophobic += 1
+
+    return num_hydrophobic
 
 
 # Exercise 3: Find Motif Positions
@@ -81,9 +87,14 @@ def find_motif(seq, motif):
     """
     # TODO: Implement this function
     # Hint: Loop through the sequence and check if seq[i:i+len(motif)] == motif
-    pass
 
+    motif_positions = []
+    for i in range(len(seq) - len(motif) + 1):
+        if i+len(motif)-1 < len(seq) and seq[i:i+len(motif)] == motif:
+            motif_positions.append(i)
 
+    return motif_positions
+            
 # Exercise 4: Calculate Isoelectric Point (Simplified)
 # TODO: Implement a simplified function to estimate the isoelectric point
 def count_charged_residues(protein_seq):
@@ -106,10 +117,15 @@ def count_charged_residues(protein_seq):
     positive = set('KRH')
     negative = set('DE')
 
-    # TODO: Implement this function
-    # Return a tuple of (number of positive, number of negative)
-    pass
+    pos_neg_counts = (0, 0)
 
+    for aa in protein_seq:
+        if aa in positive:
+            pos_neg_counts = (pos_neg_counts[0] + 1, pos_neg_counts[1])
+        elif aa in negative:
+            pos_neg_counts = (pos_neg_counts[0], pos_neg_counts[1] + 1)
+
+    return pos_neg_counts
 
 # Test your functions
 if __name__ == "__main__":

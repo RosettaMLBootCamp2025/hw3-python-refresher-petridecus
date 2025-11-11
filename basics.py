@@ -21,8 +21,8 @@ def reverse_string(s):
         >>> reverse_string("ACDEF")
         'FEDCA'
     """
-    # TODO: Implement this function
-    pass
+    ret_s = s[::-1]
+    return ret_s
 
 
 # Exercise 2: Character Counter
@@ -42,8 +42,15 @@ def count_characters(s):
         >>> count_characters("AACDE")
         {'A': 2, 'C': 1, 'D': 1, 'E': 1}
     """
-    # TODO: Implement this function using a for loop
-    pass
+    char_dict = {}
+
+    for char in s:
+        if char in char_dict:
+            char_dict[char] += 1
+        else:
+            char_dict[char] = 1
+
+    return char_dict
 
 
 # Exercise 3: Amino Acid Composition
@@ -63,9 +70,15 @@ def amino_acid_composition(protein_seq):
         >>> amino_acid_composition("AACCDDEE")
         {'A': 25.0, 'C': 25.0, 'D': 25.0, 'E': 25.0}
     """
-    # TODO: Implement this function
-    # Hint: Use count_characters() and calculate percentages
-    pass
+    total_residues = len(protein_seq)
+    sequence_dict = count_characters(protein_seq)
+    
+    percentages = {}
+
+    for aa, count in sequence_dict.items():
+        percentages[aa] = (count / total_residues) * 100
+
+    return percentages
 
 
 # Exercise 4: List Comprehension
@@ -86,8 +99,12 @@ def filter_sequences_by_length(sequences, min_length):
         >>> filter_sequences_by_length(["AC", "ACDE", "A"], 2)
         ['AC', 'ACDE']
     """
-    # TODO: Implement this using a list comprehension
-    pass
+    list = []
+    for seq in sequences:
+        if len(seq) >= min_length:
+            list.append(seq)
+
+    return list
 
 
 # Test your functions
